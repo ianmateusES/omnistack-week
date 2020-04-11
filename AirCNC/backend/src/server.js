@@ -21,7 +21,7 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server); // Mandar e receber mensagem da web e mobile
 
-mongoose.connect('mongodb+srv://?:?@aircnc-rzhif.mongodb.net/semana09?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://??:??@aircnc-rzhif.mongodb.net/semana09?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
