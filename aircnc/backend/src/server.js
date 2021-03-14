@@ -1,3 +1,5 @@
+require('dotenv/config');
+
 // Micro frame que auxilia na criação da aplicação
 const express = require('express');
 
@@ -21,7 +23,7 @@ const app = express();
 const server = http.Server(app);
 const io = socketio(server); // Mandar e receber mensagem da web e mobile
 
-mongoose.connect('mongodb+srv://??:??@aircnc-rzhif.mongodb.net/semana09?retryWrites=true&w=majority', {
+mongoose.connect(`mongodb+srv://${process.env.USER_DATABASE}:${process.env.PASSWORD_DATABASE}@universityproject.wqlng.mongodb.net/aircnc?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -52,7 +54,9 @@ app.use(routes);
 
 
 // Acesso da aplicação pela porta 3333
-server.listen(3333);
+server.listen(3333, () => {
+    console.log('🚀 Aircnc - Server started on port 3333')
+});
 
 
 
