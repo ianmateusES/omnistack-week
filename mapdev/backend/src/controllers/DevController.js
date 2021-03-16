@@ -15,7 +15,7 @@ export default {
     let dev = await Dev.findOne({ name: github_username });
     if (!dev) {
       const apiResponse = await axios.get(
-        `htttps://api.github.com/users/${github_username}`
+        `htttps://api.github.com/users/${github_username}`,
       );
 
       const techsArray = parseStringAsArray(techs);
@@ -49,7 +49,7 @@ export default {
     const dev = Dev.findByIdAndUpdate(
       { _id: id },
       { name, avatar_url, bio, latitude, longitude, techs: techsArray },
-      { new: true }
+      { new: true },
     );
 
     return res.json(dev);
