@@ -15,7 +15,7 @@ export default {
     let dev = await Dev.findOne({ name: github_username });
     if (!dev) {
       const apiResponse = await axios.get(
-        `htttps://api.github.com/users/${github_username}`,
+        `https://api.github.com/users/${github_username}`,
       );
 
       const techsArray = parseStringAsArray(techs);
@@ -41,24 +41,48 @@ export default {
   },
 
   async update(req, res) {
-    const { id } = req.params;
-    const { name, avatar_url, bio, latitude, longitude, techs } = req.body;
+    const { github_username, techs, latitude, longitude } = req.body;
+
+    const dev = await Dev.findOne({ github_username });
+
+    if (!dev) {
+      return res.status(400).json({ error: 'User not exist' });
+    }
+
+    const apiResponse = await axios.get(
+      `htttps://api.github.com/users/${github_username}`,
+    );
 
     const techsArray = parseStringAsArray(techs);
 
-    const dev = Dev.findByIdAndUpdate(
-      { _id: id },
-      { name, avatar_url, bio, latitude, longitude, techs: techsArray },
+    const { name = login, avatar_url, bio } = apiResponse.data;
+
+    const location = {
+      type: 'Point',
+      coordinates: [longitude, latitude],
+    };
+
+    const devNew = Dev.findByIdAndUpdate(
+      { _id: dev._id },
+      {
+        name,
+        avatar_url,
+        bio,
+        latitude,
+        longitude,
+        techs: techsArray,
+        location,
+      },
       { new: true },
     );
 
-    return res.json(dev);
+    return res.json(devNew);
   },
 
   async destroy(req, res) {
-    const { id } = req.params;
+    const { github_username } = req.params;
 
-    await Dev.deleteOne(id);
+    await Dev.deleteOne({ github_username });
 
     return res.status(200).json();
   },

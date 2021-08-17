@@ -6,6 +6,7 @@ import SearchController from '../controllers/SearchController';
 const routes = Router();
 
 routes.get('/devs', DevController.index);
+
 routes.post(
   '/devs',
   celebrate({
@@ -16,7 +17,7 @@ routes.post(
       longitude: Joi.number().required(),
     },
   }),
-  DevController.store
+  DevController.store,
 );
 
 routes.get(
@@ -28,7 +29,7 @@ routes.get(
       techs: Joi.string().required(),
     },
   }),
-  SearchController.index
+  SearchController.index,
 );
 
 export default routes;
